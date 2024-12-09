@@ -1,25 +1,48 @@
 package fr.filau.polyhome
 
-enum class LoginStatus {
-    SUCCESS, WRONG_CREDENTIALS, SERVER_ERROR, UNKNOWN_ERROR
-}
+import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
+import com.example.androidtp2.Api
 
-class APIWrapper {
-    val username = ""
-    val userToken = ""
+open class APIWrapper(protected val ui: AppCompatActivity) {
+    protected var username = ""
+    protected var passwordTemporary = ""
+    protected var userToken = ""
+    protected val api = Api()
+    protected val uiNotifier = UINotifier(ui)
 
-    fun login(username: String, password: String): Pair<LoginStatus, String> {
-        Api().post<List<String>>("https://polyhome.lesmoulinsdudev.com/api/users/auth", ::loadingSuccess)
-        // POST https://polyhome.lesmoulinsdudev.com/api/users/auth { login: username, password: "" }
-        val returnCode = 200
-        return when (returnCode) {
-            200 -> LoginStatus.SUCCESS to ""
-            404 -> LoginStatus.WRONG_CREDENTIALS to ""
-            500 -> LoginStatus.SERVER_ERROR to ""
-            else -> {
-                LoginStatus.UNKNOWN_ERROR to ""
-            }
+    init {
+        loadData()
+    }
+
+
+    protected fun saveData() {
+        for (data in arrayOf("username", "userToken")) {
+            val fileOutputStream = ui.openFileOutput("$data.txt", Context.MODE_PRIVATE)
+            fileOutputStream.write(
+                when (data) {
+                    "username" -> username
+                    "userToken" -> userToken
+                    else -> ""
+                }.toByteArray()
+            )
+            fileOutputStream.close()
         }
     }
 
+    private fun loadData() {
+        for (data in arrayOf("username", "userToken")) {
+            val fileName = "$data.txt"
+            if (fileName in ui.fileList()) { // Check if the file exists
+                val fileInputStream = ui.openFileInput(fileName)
+                val content = fileInputStream.bufferedReader().use { it.readText() }
+                when (data) {
+                    "username" -> username = content
+                    "userToken" -> userToken = content
+                }
+                fileInputStream.close()
+            }
+        }
+
+    }
 }
