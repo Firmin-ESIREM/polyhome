@@ -2,7 +2,13 @@ package fr.filau.polyhome
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
-import com.example.androidtp2.Api
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.runBlocking
+
+private val Context.tokenStore by preferencesDataStore(name = "token")
 
 open class APIWrapper(protected val ui: AppCompatActivity) {
     protected var username = ""
@@ -10,38 +16,30 @@ open class APIWrapper(protected val ui: AppCompatActivity) {
     protected var userToken = ""
     protected val api = Api()
     protected val uiNotifier = UINotifier(ui)
+    private var userKey = stringPreferencesKey("username")
+    private var tokenKey = stringPreferencesKey("token")
 
     init {
-        loadData()
+        runBlocking { loadData() }
     }
 
 
-    protected fun saveData() {
-        for (data in arrayOf("username", "userToken")) {
-            val fileOutputStream = ui.openFileOutput("$data.txt", Context.MODE_PRIVATE)
-            fileOutputStream.write(
-                when (data) {
-                    "username" -> username
-                    "userToken" -> userToken
-                    else -> ""
-                }.toByteArray()
-            )
-            fileOutputStream.close()
+    protected suspend fun saveData() {
+        ui.tokenStore.edit { preferences ->
+            preferences[userKey] = username;
+            preferences[tokenKey] = userToken;
         }
     }
 
-    private fun loadData() {
-        for (data in arrayOf("username", "userToken")) {
-            val fileName = "$data.txt"
-            if (fileName in ui.fileList()) { // Check if the file exists
-                val fileInputStream = ui.openFileInput(fileName)
-                val content = fileInputStream.bufferedReader().use { it.readText() }
-                when (data) {
-                    "username" -> username = content
-                    "userToken" -> userToken = content
-                }
-                fileInputStream.close()
-            }
+    private suspend fun loadData() {
+        val tokenStoreUserKey = ui.tokenStore.data.firstOrNull()?.get(userKey)
+        val tokenStoreUserToken = ui.tokenStore.data.firstOrNull()?.get(tokenKey)
+
+        if (tokenStoreUserKey != null) {
+            username = tokenStoreUserKey
+        }
+        if (tokenStoreUserToken != null) {
+            userToken = tokenStoreUserToken
         }
 
     }

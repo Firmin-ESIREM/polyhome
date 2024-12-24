@@ -2,6 +2,7 @@ package fr.filau.polyhome
 
 
 import android.app.AlertDialog
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class UINotifier (private val ui: AppCompatActivity) {
@@ -74,8 +75,14 @@ class UINotifier (private val ui: AppCompatActivity) {
             AlertDialog
                 .Builder(ui)
                 .setTitle("bg")
-                .setMessage("t trop fort")
+                .setMessage("t tro for")
                 .show()
+        }
+    }
+
+    fun toast(content: String, duration: Int = Toast.LENGTH_SHORT) {
+        ui.runOnUiThread {
+            Toast.makeText(ui, content, duration).show()
         }
     }
 }

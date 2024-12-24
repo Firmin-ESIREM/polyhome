@@ -7,9 +7,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 class AccountActivity : AppCompatActivity() {
-    private var accountsApiWrapper = AccountsAPIWrapper(this@AccountActivity)
+    private lateinit var apiWrapper: AccountsAPIWrapper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,17 +22,21 @@ class AccountActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        MainScope().launch {
+            apiWrapper = AccountsAPIWrapper(this@AccountActivity)
+        }
     }
 
-    public fun login(view: View) {
+    fun login(view: View) {
         val username = findViewById<EditText>(R.id.usernameField).text.toString()
         val password = findViewById<EditText>(R.id.passwordField).text.toString()
-        accountsApiWrapper.doLogin(username, password)
+        apiWrapper.doLogin(username, password)
     }
 
-    public fun register(view: View) {
+    fun register(view: View) {
         val username = findViewById<EditText>(R.id.usernameField).text.toString()
         val password = findViewById<EditText>(R.id.passwordField).text.toString()
-        accountsApiWrapper.doRegister(username, password)
+        apiWrapper.doRegister(username, password)
     }
 }

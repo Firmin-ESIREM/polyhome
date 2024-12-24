@@ -3,9 +3,13 @@ package fr.filau.polyhome
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.startActivity
-import com.example.androidtp2.Api
+import kotlinx.coroutines.runBlocking
 
-class AccountsAPIWrapper(ui: AppCompatActivity) : APIWrapper(ui) {
+class AccountsAPIWrapper(ui: AccountActivity) : APIWrapper(ui) {
+
+    init {
+        tryToken()
+    }
 
     fun doRegister(providedUsername: String, providedPassword: String) {
         val data = mapOf(
@@ -36,13 +40,9 @@ class AccountsAPIWrapper(ui: AppCompatActivity) : APIWrapper(ui) {
                     uiNotifier.unknownError("la connexion")
                 } else {
                     userToken = returnDataToken
-                    saveData()
+                    runBlocking { saveData() }
 
-                    val intentToNextActivity = Intent(
-                        ui,
-                        HousesActivity::class.java
-                    )
-                    startActivity(ui, intentToNextActivity, null);
+                    proceedToHousesActivity()
 
                     // uiNotifier.bravo()  // TODO: Remove this
                 }
@@ -81,5 +81,24 @@ class AccountsAPIWrapper(ui: AppCompatActivity) : APIWrapper(ui) {
             }
         }
         passwordTemporary = ""
+    }
+
+    private fun proceedToHousesActivity() {
+        val intentToNextActivity = Intent(
+            ui,
+            HousesActivity::class.java
+        )
+        startActivity(ui, intentToNextActivity, null);
+    }
+
+    private fun tryToken() {
+        api.get<Array<Map<String, String>>>("https://polyhome.lesmoulinsdudev.com/api/houses", ::tokenTried, userToken)
+    }
+
+    private fun tokenTried(responseCode: Int, returnData: Array<Map<String, String>>? = null) {
+        if (responseCode == 200) {
+            proceedToHousesActivity()
+            uiNotifier.toast("Connecté·e automatiquement 😉")
+        }
     }
 }

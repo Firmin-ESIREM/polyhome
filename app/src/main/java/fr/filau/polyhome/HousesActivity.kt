@@ -7,6 +7,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class HousesActivity : AppCompatActivity() {
+    private val apiWrapper = HousesAPIWrapper(this@HousesActivity)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -17,5 +19,8 @@ class HousesActivity : AppCompatActivity() {
             insets
         }
 
+        apiWrapper.doListHouses()
+
     }
+
 }
