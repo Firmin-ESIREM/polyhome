@@ -8,7 +8,7 @@ import androidx.core.view.WindowInsetsCompat
 import fr.filau.polyhome.R
 
 class HouseManagementActivity : AppCompatActivity() {
-    private val apiWrapper = HouseManagementAPIWrapper(this@HouseManagementActivity)
+    private lateinit var apiWrapper: HouseManagementAPIWrapper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -18,5 +18,6 @@ class HouseManagementActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        apiWrapper = HouseManagementAPIWrapper(this@HouseManagementActivity)
     }
 }

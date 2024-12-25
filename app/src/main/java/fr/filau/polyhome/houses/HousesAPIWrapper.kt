@@ -62,7 +62,7 @@ class HousesAPIWrapper(ui: HousesActivity) : APIWrapper(ui) {
         }, securityToken = userToken)
     }
 
-    private fun proceedToHouseManagementActivity(view: View) {
+    fun proceedToHouseManagementActivity(view: View) {
         val intentToNextActivity = Intent(
             ui,
             HouseManagementActivity::class.java

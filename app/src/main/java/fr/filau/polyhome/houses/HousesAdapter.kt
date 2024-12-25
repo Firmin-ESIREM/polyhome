@@ -40,6 +40,10 @@ class HousesAdapter(context: Context, dataSource: Array<HouseData>, private val 
 
         view.findViewById<TextView>(R.id.lblHouseId).text = house.houseId.toString()
 
+        view.setOnClickListener {
+            apiWrapper.proceedToHouseManagementActivity(view);
+        }
+
         return view
     }
 

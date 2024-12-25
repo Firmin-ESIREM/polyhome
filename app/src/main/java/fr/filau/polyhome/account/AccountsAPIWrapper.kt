@@ -95,7 +95,7 @@ class AccountsAPIWrapper(ui: AccountActivity) : APIWrapper(ui) {
     }
 
     private fun tryToken() {
-        api.get<Array<Map<String, String>>>("https://polyhome.lesmoulinsdudev.com/api/houses", ::tokenTried, userToken)
+        api.get("https://polyhome.lesmoulinsdudev.com/api/houses", ::tokenTried, userToken)
     }
 
     private fun tokenTried(responseCode: Int, returnData: Array<Map<String, String>>? = null) {
