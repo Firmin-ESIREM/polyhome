@@ -1,4 +1,4 @@
-package fr.filau.polyhome
+package fr.filau.polyhome.account
 
 import android.os.Bundle
 import android.view.View
@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import fr.filau.polyhome.R
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 

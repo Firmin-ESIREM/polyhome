@@ -1,4 +1,4 @@
-package fr.filau.polyhome
+package fr.filau.polyhome.generic
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

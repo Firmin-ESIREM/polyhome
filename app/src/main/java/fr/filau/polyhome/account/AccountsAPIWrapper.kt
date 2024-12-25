@@ -1,8 +1,9 @@
-package fr.filau.polyhome
+package fr.filau.polyhome.account
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.startActivity
+import fr.filau.polyhome.houses.HousesActivity
+import fr.filau.polyhome.generic.APIWrapper
 import kotlinx.coroutines.runBlocking
 
 class AccountsAPIWrapper(ui: AccountActivity) : APIWrapper(ui) {
@@ -89,6 +90,8 @@ class AccountsAPIWrapper(ui: AccountActivity) : APIWrapper(ui) {
             HousesActivity::class.java
         )
         startActivity(ui, intentToNextActivity, null);
+
+        ui.finish()
     }
 
     private fun tryToken() {

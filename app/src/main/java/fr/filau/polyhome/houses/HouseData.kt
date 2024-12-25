@@ -1,4 +1,4 @@
-package fr.filau.polyhome
+package fr.filau.polyhome.houses
 
 data class HouseData (
     val houseId: Int,

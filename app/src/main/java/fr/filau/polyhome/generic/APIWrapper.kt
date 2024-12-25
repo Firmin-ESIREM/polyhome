@@ -1,4 +1,4 @@
-package fr.filau.polyhome
+package fr.filau.polyhome.generic
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity

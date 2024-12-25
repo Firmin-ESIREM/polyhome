@@ -1,10 +1,11 @@
-package fr.filau.polyhome
+package fr.filau.polyhome.houses
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import fr.filau.polyhome.R
 
 class HousesActivity : AppCompatActivity() {
     private val apiWrapper = HousesAPIWrapper(this@HousesActivity)
@@ -22,5 +23,4 @@ class HousesActivity : AppCompatActivity() {
         apiWrapper.doListHouses()
 
     }
-
 }

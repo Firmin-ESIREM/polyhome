@@ -1,5 +1,4 @@
-package fr.filau.polyhome
-
+package fr.filau.polyhome.generic
 
 import android.app.AlertDialog
 import android.widget.Toast
@@ -37,8 +36,7 @@ class UINotifier (private val ui: AppCompatActivity) {
             }
         }
         ui.runOnUiThread {
-            AlertDialog
-                .Builder(ui)
+            AlertDialog.Builder(ui)
                 .setTitle(messageTitle)
                 .setMessage(messageContent)
                 .show()
@@ -72,8 +70,7 @@ class UINotifier (private val ui: AppCompatActivity) {
 
     fun bravo() {
         ui.runOnUiThread {
-            AlertDialog
-                .Builder(ui)
+            AlertDialog.Builder(ui)
                 .setTitle("bg")
                 .setMessage("t tro for")
                 .show()
