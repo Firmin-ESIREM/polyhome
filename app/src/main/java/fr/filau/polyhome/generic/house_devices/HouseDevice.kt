@@ -4,8 +4,9 @@ import fr.filau.polyhome.generic.UINotifier
 import fr.filau.polyhome.housemanagement.data.HouseManagementDataDevice
 
 abstract class HouseDevice (houseData: HouseManagementDataDevice, private val houseId: String, private val notifier: UINotifier, private val sendCommandThroughApi: (String) -> Unit) {
-    val deviceId = houseData.id
     val availableCommands = ArrayList<DeviceCommand>()
+    var floor = 0
+    var deviceId = 0
 
     init {
         houseData.availableCommands.forEach {
@@ -57,6 +58,9 @@ abstract class HouseDevice (houseData: HouseManagementDataDevice, private val ho
                 )
             )
         }
+        val fullId = houseData.id.split(" ")[1].split(".")
+        floor = fullId[0].toInt()
+        deviceId = fullId[1].toInt()
     }
 
     protected fun sendCommand(command: String) {

@@ -35,7 +35,7 @@ class HouseManagementAdapter(context: Context, dataSource: Array<HouseDevice>, p
 
         val device = getItem(position)
 
-        view.findViewById<TextView>(R.id.lblDeviceName).text = device.deviceId
+        view.findViewById<TextView>(R.id.lblDeviceName).text = "Étage ${device.floor}, n°${device.deviceId}"
 
         val pictureId = when (device) {
             is RollingShutter -> R.drawable.rolling_shutter
