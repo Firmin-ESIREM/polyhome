@@ -24,15 +24,15 @@ class HouseManagementAPIWrapper(ui: HouseManagementActivity) : APIWrapper(ui) {
         }
     }
 
-    fun doListPeripherals() {
-        api.get("https://polyhome.lesmoulinsdudev.com/api/houses/$houseId/devices", ::listPeripheralsDone, securityToken = userToken)
+    fun doListDevices() {
+        api.get("https://polyhome.lesmoulinsdudev.com/api/houses/$houseId/devices", ::listDevicesDone, securityToken = userToken)
     }
 
     private fun sendCommand(command: String) {
 
     }
 
-    private fun listPeripheralsDone(responseCode: Int, returnData: HouseManagementData? = null) {
+    private fun listDevicesDone(responseCode: Int, returnData: HouseManagementData? = null) {
         when (responseCode) {
             200 -> {  // Success
                 if (returnData == null) {
@@ -59,7 +59,7 @@ class HouseManagementAPIWrapper(ui: HouseManagementActivity) : APIWrapper(ui) {
                         }
                     }
                     ui.runOnUiThread {
-                        val grid = ui.findViewById<GridView>(R.id.peripheralsGrid)
+                        val grid = ui.findViewById<GridView>(R.id.devicesGrid)
                         grid.adapter = HouseManagementAdapter(ui, devices.toTypedArray(), this@HouseManagementAPIWrapper)
                     }
                 }
@@ -69,5 +69,10 @@ class HouseManagementAPIWrapper(ui: HouseManagementActivity) : APIWrapper(ui) {
             403 -> uiNotifier.forbiddenError()
             500 -> uiNotifier.serverError("la récupération des équipements de la maison")
         }
+    }
+
+    fun insertCommandsIntoGrid(grid: GridView, device: HouseDevice) {
+        grid.adapter = HouseManagementCommandsAdapter(ui, device.availableCommands.toTypedArray())
+        grid.numColumns = device.availableCommands.size
     }
 }

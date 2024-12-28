@@ -29,7 +29,7 @@ class HousesAdapter(context: Context, dataSource: Array<HouseData>, private val 
         val view = inflateView(parent)
 
         val house = getItem(position)
-        val houseNameField = view.findViewById<TextView>(R.id.lblHouseName)
+        val houseNameField = view.findViewById<TextView>(R.id.lblDeviceName)
 
         if (house.owner) {
             houseNameField.text = "Votre maison"
@@ -38,7 +38,7 @@ class HousesAdapter(context: Context, dataSource: Array<HouseData>, private val 
             houseNameField.text = "Maison …"
         }
 
-        view.findViewById<TextView>(R.id.lblHouseId).text = house.houseId.toString()
+        view.findViewById<TextView>(R.id.lblDeviceId).text = house.houseId.toString()
 
         view.setOnClickListener {
             apiWrapper.proceedToHouseManagementActivity(view);

@@ -5,31 +5,54 @@ import fr.filau.polyhome.housemanagement.data.HouseManagementDataDevice
 
 abstract class HouseDevice (houseData: HouseManagementDataDevice, private val houseId: String, private val notifier: UINotifier, private val sendCommandThroughApi: (String) -> Unit) {
     val deviceId = houseData.id
-    private val availableCommands = ArrayList<DeviceCommand>()
+    val availableCommands = ArrayList<DeviceCommand>()
 
     init {
         houseData.availableCommands.forEach {
             lateinit var functionToLink: () -> Unit
+            lateinit var commandName: String
             when (it) {
-                "OPEN" -> functionToLink = {
-                    open()
+                "OPEN" -> {
+                    functionToLink = {
+                        open()
+                    }
+                    commandName = "↑"
                 }
-                "CLOSE" -> functionToLink = {
-                    close()
+                "CLOSE" -> {
+                    functionToLink = {
+                        close()
+                    }
+                    commandName = "↓"
                 }
-                "STOP" -> functionToLink = {
-                    stop()
+                "STOP" -> {
+                    functionToLink = {
+                        stop()
+                    }
+                    commandName = "■"
                 }
-                "TURN ON" -> functionToLink = {
-                    turnOn()
+                "TURN ON" -> {
+                    functionToLink = {
+                        turnOn()
+                    }
+                    commandName = "on"
                 }
-                "TURN OFF" -> functionToLink = {
-                    turnOff()
+                "TURN OFF" -> {
+                    functionToLink = {
+                        turnOff()
+                    }
+                    commandName = "off"
+                }
+                else -> {
+                    functionToLink = {
+                        unsupportedCommand()
+                    }
+                    commandName = "?"
                 }
             }
             availableCommands.add(
                 DeviceCommand(
                     it,
+                    commandName,
                     functionToLink
                 )
             )
@@ -37,11 +60,11 @@ abstract class HouseDevice (houseData: HouseManagementDataDevice, private val ho
     }
 
     protected fun sendCommand(command: String) {
-        // TODO
+        sendCommandThroughApi(command)
     }
 
     private fun unsupportedCommand() {
-
+        notifier.toast("Commande indisponible.")
     }
 
     open fun open() {

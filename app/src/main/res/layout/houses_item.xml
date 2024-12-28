@@ -14,31 +14,30 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/lblHouseImage"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/polyhome_house" />
 
         <TextView
-            android:id="@+id/lblHouseName"
+            android:id="@+id/lblDeviceName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
             android:maxLines="2"
             android:text="Maison de\nnom d’utilisateur"
             android:textAlignment="center"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/imageView"
-            app:layout_constraintStart_toStartOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintEnd_toEndOf="@+id/lblHouseImage"
+            app:layout_constraintStart_toStartOf="@+id/lblHouseImage"
+            app:layout_constraintTop_toBottomOf="@+id/lblHouseImage" />
 
         <TextView
-            android:id="@+id/lblHouseId"
+            android:id="@+id/lblDeviceId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"

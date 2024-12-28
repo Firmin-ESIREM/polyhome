@@ -22,7 +22,7 @@ class HouseManagementActivity : AppCompatActivity() {
         }
 
         apiWrapper = HouseManagementAPIWrapper(this@HouseManagementActivity)
-        apiWrapper.doListPeripherals()
+        apiWrapper.doListDevices()
     }
 
     fun setHouseIdInTitle(houseId: String) {

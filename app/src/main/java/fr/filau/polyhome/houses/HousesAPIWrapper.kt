@@ -13,7 +13,6 @@ class HousesAPIWrapper(ui: HousesActivity) : APIWrapper(ui) {
 
     fun doListHouses() {
         api.get("https://polyhome.lesmoulinsdudev.com/api/houses", ::listHousesDone, securityToken = userToken)
-
     }
 
     private fun listHousesDone(responseCode: Int, returnData: Array<HouseData>? = null) {
@@ -24,7 +23,7 @@ class HousesAPIWrapper(ui: HousesActivity) : APIWrapper(ui) {
                     uiNotifier.unknownError("la récupération des maisons")
                 } else {
                     ui.runOnUiThread {
-                        val grid = ui.findViewById<GridView>(R.id.peripheralsGrid)
+                        val grid = ui.findViewById<GridView>(R.id.devicesGrid)
                         grid.adapter = HousesAdapter(ui, returnData, this@HousesAPIWrapper)
                     }
                 }
@@ -48,10 +47,10 @@ class HousesAPIWrapper(ui: HousesActivity) : APIWrapper(ui) {
                         if (ownerData != null) {
                             ownerUsername = ownerData.userLogin
                         }
-                    } catch (_: IndexOutOfBoundsException) {
+                    } catch (_: IndexOutOfBoundsException) {  // The house has no owner
                         ownerUsername = "anonyme 🥷"
                     } finally {
-                        val grid = ui.findViewById<GridView>(R.id.peripheralsGrid)
+                        val grid = ui.findViewById<GridView>(R.id.devicesGrid)
                         if (grid.adapter is HousesAdapter) {
                             (grid.adapter as HousesAdapter).setHouseName(ui, houseNameField, ownerUsername)
                         }
@@ -67,7 +66,7 @@ class HousesAPIWrapper(ui: HousesActivity) : APIWrapper(ui) {
             HouseManagementActivity::class.java
         )
 
-        val houseId = view.findViewById<TextView>(R.id.lblHouseId).text.toString()
+        val houseId = view.findViewById<TextView>(R.id.lblDeviceId).text.toString()
 
         intentToNextActivity.putExtra("houseId", houseId)
 

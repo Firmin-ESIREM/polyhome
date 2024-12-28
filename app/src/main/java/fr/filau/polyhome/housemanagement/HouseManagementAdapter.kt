@@ -3,12 +3,20 @@ package fr.filau.polyhome.housemanagement
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridView
+import android.widget.ImageView
+import android.widget.TextView
 import fr.filau.polyhome.R
 import fr.filau.polyhome.generic.CustomBaseAdapter
+import fr.filau.polyhome.generic.house_devices.GarageDoor
 import fr.filau.polyhome.generic.house_devices.HouseDevice
+import fr.filau.polyhome.generic.house_devices.Light
+import fr.filau.polyhome.generic.house_devices.RollingShutter
+import fr.filau.polyhome.generic.house_devices.SlidingShutter
+import kotlin.properties.Delegates
 
 class HouseManagementAdapter(context: Context, dataSource: Array<HouseDevice>, private val apiWrapper: HouseManagementAPIWrapper) : CustomBaseAdapter<Array<HouseDevice>>(context, dataSource,
-    R.layout.peripheral_item
+    R.layout.device_item
 ) {
     override fun getCount(): Int {
         return dataSource.size
@@ -23,6 +31,25 @@ class HouseManagementAdapter(context: Context, dataSource: Array<HouseDevice>, p
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        return inflateView(parent) // TODO
+        val view = inflateView(parent)
+
+        val device = getItem(position)
+
+        view.findViewById<TextView>(R.id.lblDeviceName).text = device.deviceId
+
+        val pictureId = when (device) {
+            is RollingShutter -> R.drawable.rolling_shutter
+            is SlidingShutter -> R.drawable.sliding_shutter
+            is GarageDoor -> R.drawable.garage_door
+            is Light -> R.drawable.light_off
+            else -> 0
+        }
+
+        view.findViewById<ImageView>(R.id.lblDeviceTypeImage).setImageResource(pictureId)
+
+        val commandsGrid = view.findViewById<GridView>(R.id.lblCommandsGrid)
+        apiWrapper.insertCommandsIntoGrid(commandsGrid, device)
+
+        return view
     }
 }
