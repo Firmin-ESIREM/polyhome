@@ -68,7 +68,7 @@ class UINotifier (private val ui: AppCompatActivity) {
         notify("usernameAlreadyInUse")
     }
 
-    fun bravo() {
+    fun bravo() {  // TODO: Remove this once this is completed
         ui.runOnUiThread {
             AlertDialog.Builder(ui)
                 .setTitle("bg")
