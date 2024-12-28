@@ -50,6 +50,10 @@ class HouseManagementAdapter(context: Context, dataSource: Array<HouseDevice>, p
         val commandsGrid = view.findViewById<GridView>(R.id.lblCommandsGrid)
         apiWrapper.insertCommandsIntoGrid(commandsGrid, device)
 
+        view.setOnClickListener {
+            // TODO: Specific activity
+        }
+
         return view
     }
 }

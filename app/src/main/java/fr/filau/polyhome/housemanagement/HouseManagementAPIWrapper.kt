@@ -72,7 +72,7 @@ class HouseManagementAPIWrapper(ui: HouseManagementActivity) : APIWrapper(ui) {
     }
 
     fun insertCommandsIntoGrid(grid: GridView, device: HouseDevice) {
-        grid.adapter = HouseManagementCommandsAdapter(ui, device.availableCommands.toTypedArray())
         grid.numColumns = device.availableCommands.size
+        grid.adapter = HouseManagementCommandsAdapter(ui, device.availableCommands.toTypedArray())
     }
 }

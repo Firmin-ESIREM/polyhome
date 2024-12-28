@@ -29,7 +29,13 @@ class HouseManagementCommandsAdapter(context: Context, dataSource: Array<DeviceC
 
         val command = getItem(position)
 
-        view.findViewById<Button>(R.id.lblCommandName).text = command.name
+        val button = view.findViewById<Button>(R.id.lblCommandName)
+
+        button.text = command.name
+
+        button.setOnClickListener {
+            command.execute()
+        }
 
         return view
     }
