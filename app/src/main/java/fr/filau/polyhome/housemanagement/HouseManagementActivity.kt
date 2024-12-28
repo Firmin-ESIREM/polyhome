@@ -1,6 +1,7 @@
 package fr.filau.polyhome.housemanagement
 
 import android.os.Bundle
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -9,6 +10,7 @@ import fr.filau.polyhome.R
 
 class HouseManagementActivity : AppCompatActivity() {
     private lateinit var apiWrapper: HouseManagementAPIWrapper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -18,6 +20,13 @@ class HouseManagementActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         apiWrapper = HouseManagementAPIWrapper(this@HouseManagementActivity)
+        apiWrapper.doListPeripherals()
+    }
+
+    fun setHouseIdInTitle(houseId: String) {
+        val headerTitle = findViewById<TextView>(R.id.headerTitle)
+        headerTitle.text = "($houseId) " + headerTitle.text.toString()
     }
 }

@@ -1,4 +1,6 @@
-package fr.filau.polyhome.generic
+package fr.filau.polyhome.generic.external
+
+// Api class courtesy of Charles Meunier.
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

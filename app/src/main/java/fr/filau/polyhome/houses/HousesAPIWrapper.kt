@@ -23,9 +23,8 @@ class HousesAPIWrapper(ui: HousesActivity) : APIWrapper(ui) {
                 if (returnDataToken == null) {
                     uiNotifier.unknownError("la récupération des maisons")
                 } else {
-                    // uiNotifier.bravo()
                     ui.runOnUiThread {
-                        val grid = ui.findViewById<GridView>(R.id.housesGrid)
+                        val grid = ui.findViewById<GridView>(R.id.peripheralsGrid)
                         grid.adapter = HousesAdapter(ui, returnData, this@HousesAPIWrapper)
                     }
                 }
@@ -52,7 +51,7 @@ class HousesAPIWrapper(ui: HousesActivity) : APIWrapper(ui) {
                     } catch (_: IndexOutOfBoundsException) {
                         ownerUsername = "anonyme 🥷"
                     } finally {
-                        val grid = ui.findViewById<GridView>(R.id.housesGrid)
+                        val grid = ui.findViewById<GridView>(R.id.peripheralsGrid)
                         if (grid.adapter is HousesAdapter) {
                             (grid.adapter as HousesAdapter).setHouseName(ui, houseNameField, ownerUsername)
                         }

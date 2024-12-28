@@ -44,8 +44,6 @@ class AccountsAPIWrapper(ui: AccountActivity) : APIWrapper(ui) {
                     runBlocking { saveData() }
 
                     proceedToHousesActivity()
-
-                    // uiNotifier.bravo()  // TODO: Remove this
                 }
             }
             400 -> {  // Incorrect data provided

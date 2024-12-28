@@ -5,25 +5,24 @@ import android.view.View
 import android.view.ViewGroup
 import fr.filau.polyhome.R
 import fr.filau.polyhome.generic.CustomBaseAdapter
-import fr.filau.polyhome.houses.HouseData
-import fr.filau.polyhome.houses.HousesAPIWrapper
+import fr.filau.polyhome.generic.house_devices.HouseDevice
 
-class HouseManagementAdapter(context: Context, dataSource: Array<HouseManagementData>, private val apiWrapper: HousesAPIWrapper) : CustomBaseAdapter<Array<HouseManagementData>>(context, dataSource,
-    R.layout.houses_item // TODO: To update !!!
+class HouseManagementAdapter(context: Context, dataSource: Array<HouseDevice>, private val apiWrapper: HouseManagementAPIWrapper) : CustomBaseAdapter<Array<HouseDevice>>(context, dataSource,
+    R.layout.peripheral_item
 ) {
     override fun getCount(): Int {
-        TODO("Not yet implemented")
+        return dataSource.size
     }
 
-    override fun getItem(p0: Int): Any {
-        TODO("Not yet implemented")
+    override fun getItem(position: Int): HouseDevice {
+        return dataSource[position]
     }
 
-    override fun getItemId(p0: Int): Long {
-        TODO("Not yet implemented")
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
     }
 
-    override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
-        TODO("Not yet implemented")
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+        return inflateView(parent) // TODO
     }
 }
