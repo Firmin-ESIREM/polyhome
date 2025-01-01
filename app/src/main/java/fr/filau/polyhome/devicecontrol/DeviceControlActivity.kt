@@ -7,8 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import fr.filau.polyhome.R
-import fr.filau.polyhome.generic.house_devices.HouseDevice
-import fr.filau.polyhome.housemanagement.HouseManagementAPIWrapper
 
 class DeviceControlActivity : AppCompatActivity() {
     private val apiWrapper = DeviceControlAPIWrapper(this@DeviceControlActivity)

@@ -1,7 +1,5 @@
 package fr.filau.polyhome.generic.house_devices
 
-import android.content.Context
-import android.view.View
 import fr.filau.polyhome.generic.UINotifier
 import fr.filau.polyhome.housemanagement.data.HouseManagementDataDevice
 
