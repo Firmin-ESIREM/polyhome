@@ -51,7 +51,7 @@ class HouseManagementAdapter(context: Context, dataSource: Array<HouseDevice>, p
         apiWrapper.insertCommandsIntoGrid(commandsGrid, device)
 
         view.setOnClickListener {
-            // TODO: Specific activity
+            apiWrapper.proceedToDeviceControlActivity(device)
         }
 
         return view

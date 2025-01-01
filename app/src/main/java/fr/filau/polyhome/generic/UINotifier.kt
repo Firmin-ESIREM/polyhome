@@ -1,8 +1,10 @@
 package fr.filau.polyhome.generic
 
 import android.app.AlertDialog
+import android.view.WindowManager.BadTokenException
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+
 
 class UINotifier (private val ui: AppCompatActivity) {
 
@@ -36,10 +38,12 @@ class UINotifier (private val ui: AppCompatActivity) {
             }
         }
         ui.runOnUiThread {
-            AlertDialog.Builder(ui)
-                .setTitle(messageTitle)
-                .setMessage(messageContent)
-                .show()
+            try {
+                AlertDialog.Builder(ui)
+                    .setTitle(messageTitle)
+                    .setMessage(messageContent)
+                    .show()
+            } catch (_: BadTokenException) {}
         }
      }
 
@@ -66,6 +70,10 @@ class UINotifier (private val ui: AppCompatActivity) {
 
     fun usernameAlreadyInUse() {
         notify("usernameAlreadyInUse")
+    }
+
+    fun cmdSuccess() {
+        toast("Commande transmise ✌️")
     }
 
     fun bravo() {  // TODO: Remove this once this is completed

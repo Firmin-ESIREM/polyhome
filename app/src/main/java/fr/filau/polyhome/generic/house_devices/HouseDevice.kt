@@ -1,10 +1,14 @@
 package fr.filau.polyhome.generic.house_devices
 
+import android.content.Context
+import android.view.View
 import fr.filau.polyhome.generic.UINotifier
 import fr.filau.polyhome.housemanagement.data.HouseManagementDataDevice
 
-abstract class HouseDevice (houseData: HouseManagementDataDevice, private val houseId: String, private val notifier: UINotifier, private val sendCommandThroughApi: (String) -> Unit) {
+
+abstract class HouseDevice (houseData: HouseManagementDataDevice, val houseId: String, private val notifier: UINotifier, private val sendCommandThroughApi: (String, HouseDevice) -> Unit) {
     val availableCommands = ArrayList<DeviceCommand>()
+    val id = houseData.id
     var floor = 0
     var deviceId = 0
 
@@ -17,13 +21,13 @@ abstract class HouseDevice (houseData: HouseManagementDataDevice, private val ho
                     functionToLink = {
                         open()
                     }
-                    commandName = "↑"
+                    commandName = if (this is SlidingShutter) "←" else "↑"
                 }
                 "CLOSE" -> {
                     functionToLink = {
                         close()
                     }
-                    commandName = "↓"
+                    commandName = if (this is SlidingShutter) "→" else "↓"
                 }
                 "STOP" -> {
                     functionToLink = {
@@ -64,7 +68,7 @@ abstract class HouseDevice (houseData: HouseManagementDataDevice, private val ho
     }
 
     protected fun sendCommand(command: String) {
-        sendCommandThroughApi(command)
+        sendCommandThroughApi(command, this@HouseDevice)
     }
 
     private fun unsupportedCommand() {
@@ -90,4 +94,23 @@ abstract class HouseDevice (houseData: HouseManagementDataDevice, private val ho
     open fun turnOff() {
         unsupportedCommand()
     }
+
+    fun deviceControlGetCount(): Int {
+        return 1
+    }
+
+    fun deviceControlGetItem(position: Int): Int {
+        return position
+    }
+
+    fun deviceControlGetItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    fun deviceControlGetView(position: Int, view: View): View {
+        if (position != 0) throw IndexOutOfBoundsException()
+        return deviceControlGetViewSpecific(view)
+    }
+
+    protected abstract fun deviceControlGetViewSpecific(view: View): View
 }

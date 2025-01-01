@@ -32,6 +32,7 @@ class HousesAPIWrapper(ui: HousesActivity) : APIWrapper(ui) {
             400 -> uiNotifier.badRequestError("la récupération des maisons")
             403 -> uiNotifier.forbiddenError()
             500 -> uiNotifier.serverError("la récupération des maisons")
+            else -> uiNotifier.unknownError("la récupération des maisons")
         }
     }
 
