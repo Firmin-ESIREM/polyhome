@@ -11,6 +11,7 @@ abstract class CustomBaseAdapter<T>(context: Context, protected var dataSource: 
 
     fun updateDataSource(newDataSource: T) {
         dataSource = newDataSource
+        notifyDataSetChanged()
     }
 
     protected fun inflateView(parent: ViewGroup?): View {

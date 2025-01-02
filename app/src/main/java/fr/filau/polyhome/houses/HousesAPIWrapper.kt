@@ -1,5 +1,6 @@
 package fr.filau.polyhome.houses
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.view.View
 import android.widget.GridView
@@ -7,7 +8,10 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat.startActivity
 import fr.filau.polyhome.housemanagement.HouseManagementActivity
 import fr.filau.polyhome.R
+import fr.filau.polyhome.account.AccountActivity
 import fr.filau.polyhome.generic.APIWrapper
+import fr.filau.polyhome.houseaccess.HouseAccessActivity
+import kotlinx.coroutines.runBlocking
 
 class HousesAPIWrapper(ui: HousesActivity) : APIWrapper(ui) {
 
@@ -72,5 +76,48 @@ class HousesAPIWrapper(ui: HousesActivity) : APIWrapper(ui) {
         intentToNextActivity.putExtra("houseId", houseId)
 
         startActivity(ui, intentToNextActivity, null);
+    }
+
+    fun proceedToHouseAccessActivity(view: View) {
+        val intentToNextActivity = Intent(
+            ui,
+            HouseAccessActivity::class.java
+        )
+
+        val houseId = view.findViewById<TextView>(R.id.lblDeviceId).text.toString()
+
+        intentToNextActivity.putExtra("houseId", houseId)
+
+        startActivity(ui, intentToNextActivity, null);
+    }
+
+    private fun proceedBackToAccountActivity() {
+        val intentToNextActivity = Intent(
+            ui,
+            AccountActivity::class.java
+        )
+
+        startActivity(ui, intentToNextActivity, null);
+    }
+
+    fun logoutManager() {
+        ui.runOnUiThread {
+            AlertDialog.Builder(ui)
+                .setTitle("Bonjour !")
+                .setMessage("$username, vous êtes actuellement connecté·e.")
+                .setNegativeButton("Déconnexion") { _, _ ->
+                    username = ""
+                    userToken = ""
+                    runBlocking {
+                        saveData()
+                    }
+                    proceedBackToAccountActivity()
+                    ui.finish()
+                }
+                .setPositiveButton("Fermer") { _, _ ->
+                    // Nothing to do
+                }
+                .show()
+        }
     }
 }

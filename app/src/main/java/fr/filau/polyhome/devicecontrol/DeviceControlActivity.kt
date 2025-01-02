@@ -1,7 +1,7 @@
 package fr.filau.polyhome.devicecontrol
 
 import android.os.Bundle
-import android.widget.ListView
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -19,6 +19,9 @@ class DeviceControlActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+        findViewById<Button>(R.id.backButton).setOnClickListener {
+            finish()
         }
         apiWrapper.setDevice()
     }

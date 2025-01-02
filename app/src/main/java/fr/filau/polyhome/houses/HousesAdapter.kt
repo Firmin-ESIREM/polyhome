@@ -3,6 +3,7 @@ package fr.filau.polyhome.houses
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import fr.filau.polyhome.R
@@ -39,6 +40,16 @@ class HousesAdapter(context: Context, dataSource: Array<HouseData>, private val 
         }
 
         view.findViewById<TextView>(R.id.lblDeviceId).text = house.houseId.toString()
+
+        val grantAccessPicture = view.findViewById<ImageView>(R.id.grantAccess)
+
+        if (house.owner) {
+            grantAccessPicture.setOnClickListener {
+                apiWrapper.proceedToHouseAccessActivity(view)
+            }
+        } else {
+            (grantAccessPicture.parent as ViewGroup).removeView(grantAccessPicture)
+        }
 
         view.setOnClickListener {
             apiWrapper.proceedToHouseManagementActivity(view);

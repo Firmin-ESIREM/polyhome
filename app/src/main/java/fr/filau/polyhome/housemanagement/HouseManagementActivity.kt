@@ -1,6 +1,7 @@
 package fr.filau.polyhome.housemanagement
 
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -21,7 +22,9 @@ class HouseManagementActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
+        findViewById<Button>(R.id.backButton).setOnClickListener {
+            finish()
+        }
         apiWrapper = HouseManagementAPIWrapper(this@HouseManagementActivity)
         apiWrapper.doListDevices()
     }

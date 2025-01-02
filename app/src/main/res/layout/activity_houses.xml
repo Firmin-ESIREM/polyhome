@@ -34,4 +34,14 @@
         android:verticalSpacing="20dp"
         android:horizontalSpacing="10dp" />
 
+    <ImageView
+        android:id="@+id/userPicture"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginEnd="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_myplaces" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
