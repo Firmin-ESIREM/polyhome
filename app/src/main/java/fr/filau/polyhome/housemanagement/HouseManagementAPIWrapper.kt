@@ -11,8 +11,11 @@ import fr.filau.polyhome.generic.house_devices.GarageDoor
 import fr.filau.polyhome.generic.house_devices.HouseDevice
 import fr.filau.polyhome.generic.house_devices.Light
 import fr.filau.polyhome.generic.house_devices.RollingShutter
+import fr.filau.polyhome.generic.house_devices.Shutter
 import fr.filau.polyhome.generic.house_devices.SlidingShutter
 import fr.filau.polyhome.housemanagement.data.HouseManagementData
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 
 
 class HouseManagementAPIWrapper(ui: HouseManagementActivity) : APIWrapper(ui) {
@@ -29,8 +32,9 @@ class HouseManagementAPIWrapper(ui: HouseManagementActivity) : APIWrapper(ui) {
         }
     }
 
-    fun doListDevices() {
-        api.get("https://polyhome.lesmoulinsdudev.com/api/houses/$houseId/devices", ::listDevicesDone, securityToken = userToken)
+    fun doListDevices(customCallback: ((Int, HouseManagementData?) -> Unit)? = null) {
+        val callback: ((Int, HouseManagementData?) -> Unit) = customCallback ?: ::listDevicesDone
+        api.get("https://polyhome.lesmoulinsdudev.com/api/houses/$houseId/devices", callback, securityToken = userToken)
     }
 
     private fun sendCommand(command: String, device: HouseDevice) {
@@ -91,7 +95,7 @@ class HouseManagementAPIWrapper(ui: HouseManagementActivity) : APIWrapper(ui) {
 
     fun insertCommandsIntoGrid(grid: GridView, device: HouseDevice) {
         grid.numColumns = device.availableCommands.size
-        grid.adapter = HouseManagementCommandsAdapter(ui, device.availableCommands.toTypedArray())
+        grid.adapter = HouseManagementCommandsAdapter(ui, device.availableCommands.toTypedArray(), this@HouseManagementAPIWrapper)
     }
 
     fun proceedToDeviceControlActivity(device: HouseDevice) {
@@ -103,5 +107,34 @@ class HouseManagementAPIWrapper(ui: HouseManagementActivity) : APIWrapper(ui) {
         DeviceControlCurrentDeviceHolder.sharedDevice = device
 
         startActivity(ui, intentToNextActivity, null);
+    }
+
+    fun runStateRefresh() {
+        doListDevices(::stateRefreshed)
+    }
+
+    private fun stateRefreshed(responseCode: Int, returnData: HouseManagementData? = null) {
+        when (responseCode) {
+            200 -> {  // Success
+                if (returnData != null) {
+                    val adapter = ui.findViewById<GridView>(R.id.devicesGrid).adapter as HouseManagementAdapter
+                    val dataSource = adapter.retrieveDataSource()
+                    val data = ArrayList<HouseDevice>()
+                    returnData.devices.forEach { updateDevice ->
+                        val device = dataSource.filter { originalDevice ->
+                            originalDevice.id == updateDevice.id
+                        }[0]
+                        when (device) {
+                            is Shutter -> device.currentState = updateDevice.opening ?: 0F
+                            is Light -> device.currentState = updateDevice.power ?: 0F
+                        }
+                        data.add(device)
+                    }
+                    ui.runOnUiThread {
+                        adapter.updateDataSource(data.toTypedArray())
+                    }
+                }
+            }
+        }
     }
 }

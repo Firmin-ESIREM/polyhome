@@ -9,12 +9,16 @@ import fr.filau.polyhome.housemanagement.data.HouseManagementDataDevice
 
 
 abstract class Shutter (houseData: HouseManagementDataDevice, houseId: String, notifier: UINotifier, sendCommandThroughApi: (String, HouseDevice) -> Unit) : HouseDevice(houseData, houseId, notifier, sendCommandThroughApi) {
+    override var currentState: Float = houseData.opening ?: 0F
+
     override fun open() {
         sendCommand("OPEN")
+        currentState = 1F
     }
 
     override fun close() {
         sendCommand("CLOSE")
+        currentState = 0F
     }
 
     override fun stop() {
@@ -29,15 +33,19 @@ abstract class Shutter (houseData: HouseManagementDataDevice, houseId: String, n
 
         openButton.setOnClickListener {
             open()
+            positionSeekbar.progress = 100
         }
 
         closeButton.setOnClickListener {
             close()
+            positionSeekbar.progress = 0
         }
 
         stopButton.setOnClickListener {
             stop()
         }
+
+        positionSeekbar.progress = (currentState * 100).toInt()
 
         positionSeekbar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {

@@ -14,14 +14,7 @@ import fr.filau.polyhome.generic.house_devices.SlidingShutter
 class DeviceControlAdapter(context: Context, dataSource: HouseDevice, private val apiWrapper: DeviceControlAPIWrapper) : CustomBaseAdapter<HouseDevice>(context, dataSource,
     0
 ) {
-    init {
-        layoutItem = when (dataSource) {
-            is RollingShutter, is GarageDoor -> R.layout.rollingshutter_garagedoor_control_item
-            is SlidingShutter -> R.layout.slidingshutter_control_item
-            is Light -> R.layout.light_control_item
-            else -> 0
-        }
-    }
+    override val layoutItem = dataSource.layout
 
     override fun getCount(): Int {
         return dataSource.deviceControlGetCount()

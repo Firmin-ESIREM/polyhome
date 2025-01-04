@@ -9,7 +9,7 @@ import fr.filau.polyhome.generic.CustomBaseAdapter
 import fr.filau.polyhome.generic.house_devices.DeviceCommand
 
 
-class HouseManagementCommandsAdapter(context: Context, dataSource: Array<DeviceCommand>) : CustomBaseAdapter<Array<DeviceCommand>>(context, dataSource,
+class HouseManagementCommandsAdapter(context: Context, dataSource: Array<DeviceCommand>, private val apiWrapper: HouseManagementAPIWrapper) : CustomBaseAdapter<Array<DeviceCommand>>(context, dataSource,
     R.layout.command_item
 ) {
     override fun getCount(): Int {
@@ -35,6 +35,7 @@ class HouseManagementCommandsAdapter(context: Context, dataSource: Array<DeviceC
 
         button.setOnClickListener {
             command.execute()
+            if (command.id == "STOP") apiWrapper.runStateRefresh()
         }
 
         return view

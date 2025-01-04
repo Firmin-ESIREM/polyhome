@@ -13,10 +13,23 @@ import fr.filau.polyhome.generic.house_devices.HouseDevice
 import fr.filau.polyhome.generic.house_devices.Light
 import fr.filau.polyhome.generic.house_devices.RollingShutter
 import fr.filau.polyhome.generic.house_devices.SlidingShutter
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 
 class HouseManagementAdapter(context: Context, dataSource: Array<HouseDevice>, private val apiWrapper: HouseManagementAPIWrapper) : CustomBaseAdapter<Array<HouseDevice>>(context, dataSource,
     R.layout.device_item
 ) {
+    init {
+        Thread {
+            while (true) {
+                runBlocking {
+                    delay(5000)
+                }
+                apiWrapper.runStateRefresh()
+            }
+        }.start()
+    }
+
     override fun getCount(): Int {
         return dataSource.size
     }

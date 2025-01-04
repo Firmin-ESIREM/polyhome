@@ -4,7 +4,7 @@ data class HouseManagementDataDevice(
     val id: String,
     val type: String,
     val availableCommands: ArrayList<String>,
-    val opening: Int?,
+    val opening: Float?,
     val openingMode: Int?,
-    val power: Int?
+    val power: Float?
 )

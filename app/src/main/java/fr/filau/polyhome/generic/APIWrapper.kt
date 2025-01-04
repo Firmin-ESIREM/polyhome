@@ -11,7 +11,7 @@ import kotlinx.coroutines.runBlocking
 
 private val Context.tokenStore by preferencesDataStore(name = "token")
 
-open class APIWrapper(protected val ui: AppCompatActivity) {
+abstract class APIWrapper(protected val ui: AppCompatActivity) {
     protected var username = ""
     protected var passwordTemporary = ""
     protected var userToken = ""
@@ -21,7 +21,9 @@ open class APIWrapper(protected val ui: AppCompatActivity) {
     private var tokenKey = stringPreferencesKey("token")
 
     init {
-        runBlocking { loadData() }
+        runBlocking {
+            loadData()
+        }
     }
 
 

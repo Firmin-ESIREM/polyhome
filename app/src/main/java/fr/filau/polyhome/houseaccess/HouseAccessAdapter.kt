@@ -33,7 +33,7 @@ class HouseAccessAdapter(context: Context, dataSourceLocal: Array<HouseAccessDat
     }
 
     override fun getItemId(position: Int): Long {
-        return position.toLong()  // TODO
+        return position.toLong()
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
