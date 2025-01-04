@@ -25,7 +25,7 @@ class DeviceControlAPIWrapper(ui: DeviceControlActivity) : APIWrapper(ui) {
             is Light -> "Lampe"
             else -> ""
         }
-        ui.findViewById<TextView>(R.id.headerTitle).text = "$deviceType ${device.floor}.${device.deviceId}"
+        ui.findViewById<TextView>(R.id.headerTitle).text = "$deviceType ${device.floor}.${device.deviceId}."
         ui.findViewById<ListView>(R.id.controlLayoutToPopulate).adapter = DeviceControlAdapter(ui, device, this@DeviceControlAPIWrapper)
     }
 }
