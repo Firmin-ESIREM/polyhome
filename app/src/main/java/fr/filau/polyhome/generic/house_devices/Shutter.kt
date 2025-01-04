@@ -8,21 +8,26 @@ import fr.filau.polyhome.generic.UINotifier
 import fr.filau.polyhome.housemanagement.data.HouseManagementDataDevice
 
 
-abstract class Shutter (houseData: HouseManagementDataDevice, houseId: String, notifier: UINotifier, sendCommandThroughApi: (String, HouseDevice) -> Unit) : HouseDevice(houseData, houseId, notifier, sendCommandThroughApi) {
-    override var currentState: Float = houseData.opening ?: 0F
+abstract class Shutter (houseData: HouseManagementDataDevice, houseId: String, notifier: UINotifier, sendCommandThroughApi: (String, HouseDevice) -> Unit, private val moveToSpecificPositionThroughApi: (Double, Shutter) -> Unit) : HouseDevice(houseData, houseId, notifier, sendCommandThroughApi) {
+    override var currentState: Double = houseData.opening ?: 0.0
 
     override fun open() {
         sendCommand("OPEN")
-        currentState = 1F
+        currentState = 1.0
     }
 
     override fun close() {
         sendCommand("CLOSE")
-        currentState = 0F
+        currentState = 0.0
     }
 
     override fun stop() {
         sendCommand("STOP")
+    }
+
+    fun moveToSpecificPosition(position: Int) {
+        val desiredPosition = position / 100.0
+        moveToSpecificPositionThroughApi(desiredPosition, this@Shutter)
     }
 
     override fun deviceControlGetViewSpecific(view: View): View {
@@ -48,13 +53,13 @@ abstract class Shutter (houseData: HouseManagementDataDevice, houseId: String, n
         positionSeekbar.progress = (currentState * 100).toInt()
 
         positionSeekbar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                // TODO
-            }
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {}
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
 
-            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                moveToSpecificPosition(seekBar.progress)
+            }
         })
 
         return view

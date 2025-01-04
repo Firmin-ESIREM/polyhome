@@ -5,6 +5,6 @@ import fr.filau.polyhome.generic.UINotifier
 import fr.filau.polyhome.housemanagement.data.HouseManagementDataDevice
 
 
-class SlidingShutter (houseData: HouseManagementDataDevice, houseId: String, notifier: UINotifier, sendCommandThroughApi: (String, HouseDevice) -> Unit) : Shutter(houseData, houseId, notifier, sendCommandThroughApi) {
+class SlidingShutter (houseData: HouseManagementDataDevice, houseId: String, notifier: UINotifier, sendCommandThroughApi: (String, HouseDevice) -> Unit, moveToSpecificPositionThroughApi: (Double, Shutter) -> Unit) : Shutter(houseData, houseId, notifier, sendCommandThroughApi, moveToSpecificPositionThroughApi) {
     override val layout = R.layout.slidingshutter_control_item
 }

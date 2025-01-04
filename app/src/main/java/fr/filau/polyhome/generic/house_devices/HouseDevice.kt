@@ -10,7 +10,7 @@ abstract class HouseDevice (houseData: HouseManagementDataDevice, val houseId: S
     val id = houseData.id
     var floor = 0
     var deviceId = 0
-    abstract var currentState: Float
+    abstract var currentState: Double
     abstract val layout: Int
 
     init {

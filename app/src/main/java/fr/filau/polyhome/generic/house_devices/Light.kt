@@ -8,7 +8,7 @@ import fr.filau.polyhome.housemanagement.data.HouseManagementDataDevice
 
 
 class Light (houseData: HouseManagementDataDevice, houseId: String, notifier: UINotifier, sendCommandThroughApi: (String, HouseDevice) -> Unit) : HouseDevice(houseData, houseId, notifier, sendCommandThroughApi) {
-    override var currentState: Float = houseData.power ?: 0F
+    override var currentState: Double = houseData.power ?: 0.0
     override val layout = R.layout.light_control_item
 
     override fun deviceControlGetViewSpecific(view: View): View {
@@ -25,25 +25,25 @@ class Light (houseData: HouseManagementDataDevice, houseId: String, notifier: UI
 
     override fun turnOn() {
         sendCommand("TURN ON")
-        currentState = 1F
+        currentState = 1.0
     }
 
     override fun turnOff() {
         sendCommand("TURN OFF")
-        currentState = 0F
+        currentState = 0.0
     }
 
     private fun toggle() {
         when (currentState) {
-            0F -> turnOn()
-            1F -> turnOff()
+            0.0 -> turnOn()
+            1.0 -> turnOff()
         }
     }
 
     private fun setImageResourceForCurrentState(imageView: ImageView) {
         val imgResource = when (currentState) {
-            1F -> R.drawable.light_on
-            0F -> R.drawable.light_off
+            1.0 -> R.drawable.light_on
+            0.0 -> R.drawable.light_off
             else -> 0
         }
         imageView.setImageResource(imgResource)

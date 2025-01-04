@@ -44,6 +44,48 @@ class HouseManagementAPIWrapper(ui: HouseManagementActivity) : APIWrapper(ui) {
         api.post("https://polyhome.lesmoulinsdudev.com/api/houses/${device.houseId}/devices/${device.id}/command", data, ::cmdSuccess, securityToken = userToken)
     }
 
+    private fun shutterMoveToSpecificPosition(position: Double, device: Shutter) {
+        fun checkIfPositionReached(directionOpen: Boolean) {
+            doListDevices { responseCode, returnData ->
+                if (responseCode == 200 && returnData != null) {
+                    try {
+                        val deviceCurrent = returnData.devices.filter {
+                            it.id == device.id
+                        }[0]
+                        if (deviceCurrent.opening != null) {
+                            if (   ( directionOpen  && deviceCurrent.opening >= position)
+                                || (!directionOpen && deviceCurrent.opening <= position)) {
+                                device.stop()
+                                device.currentState = deviceCurrent.opening
+                            } else {
+                                checkIfPositionReached(directionOpen)
+                            }
+                        }
+                    } catch (_: IndexOutOfBoundsException) {}
+                }
+            }
+        }
+
+        doListDevices { responseCode, returnData ->
+            if (responseCode == 200 && returnData != null) {
+                try {
+                    val deviceCurrent = returnData.devices.filter {
+                        it.id == device.id
+                    }[0]
+                    if (deviceCurrent.opening != null) {
+                        if (deviceCurrent.opening < position) {
+                            device.open()
+                            checkIfPositionReached(true)
+                        } else if (deviceCurrent.opening > position) {
+                            device.close()
+                            checkIfPositionReached(false)
+                        }
+                    }
+                } catch (_: IndexOutOfBoundsException) {}
+            }
+        }
+    }
+
     private fun cmdSuccess(responseCode: Int) {
         when (responseCode) {
             200 -> uiNotifier.cmdSuccess()
@@ -63,13 +105,13 @@ class HouseManagementAPIWrapper(ui: HouseManagementActivity) : APIWrapper(ui) {
                     returnData.devices.forEach {
                         when (it.type) {
                             "rolling shutter" -> {
-                                devices.add(RollingShutter(it, houseId, uiNotifier, ::sendCommand))
+                                devices.add(RollingShutter(it, houseId, uiNotifier, ::sendCommand, ::shutterMoveToSpecificPosition))
                             }
                             "sliding shutter" -> {
-                                devices.add(SlidingShutter(it, houseId, uiNotifier, ::sendCommand))
+                                devices.add(SlidingShutter(it, houseId, uiNotifier, ::sendCommand, ::shutterMoveToSpecificPosition))
                             }
                             "garage door" -> {
-                                devices.add(GarageDoor(it, houseId, uiNotifier, ::sendCommand))
+                                devices.add(GarageDoor(it, houseId, uiNotifier, ::sendCommand, ::shutterMoveToSpecificPosition))
                             }
                             "light" -> {
                                 devices.add(Light(it, houseId, uiNotifier, ::sendCommand))
@@ -121,14 +163,16 @@ class HouseManagementAPIWrapper(ui: HouseManagementActivity) : APIWrapper(ui) {
                     val dataSource = adapter.retrieveDataSource()
                     val data = ArrayList<HouseDevice>()
                     returnData.devices.forEach { updateDevice ->
-                        val device = dataSource.filter { originalDevice ->
-                            originalDevice.id == updateDevice.id
-                        }[0]
-                        when (device) {
-                            is Shutter -> device.currentState = updateDevice.opening ?: 0F
-                            is Light -> device.currentState = updateDevice.power ?: 0F
-                        }
-                        data.add(device)
+                        try {
+                            val device = dataSource.filter { originalDevice ->
+                                originalDevice.id == updateDevice.id
+                            }[0]
+                            when (device) {
+                                is Shutter -> device.currentState = updateDevice.opening ?: 0.0
+                                is Light -> device.currentState = updateDevice.power ?: 0.0
+                            }
+                            data.add(device)
+                        } catch (_: IndexOutOfBoundsException) {}
                     }
                     ui.runOnUiThread {
                         adapter.updateDataSource(data.toTypedArray())
