@@ -6,8 +6,10 @@ The followed instructions and the API docs are available [at that link](https://
 
 ## Bonus features
 
-* Add and remove user access
-* Move to a specific position for the shutters (using the seekbar)
+* You can add and remove user access for houses that you are the owner of, using the view accessible by touching the key icon.
+* You can move to a specific position for the shutters (using the seekbar in the device-specific view).
+    * **Known bug :** For rolling shutters and garage doors, the seekbars act weirdly, because the component is not designed to be put vertically. You should not drag-and-drop the cursor of those seekbars, but only touch where you want to place the cursor.
+* A different device-specific view is implemented for sliding shutters, given the API actually works the way it is documented 🙃.
 
 ## _____
 

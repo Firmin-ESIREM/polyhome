@@ -58,7 +58,7 @@ class HousesAdapter(context: Context, dataSource: Array<HouseData>, private val 
         return view
     }
 
-    fun setHouseName(ui: AppCompatActivity,houseNameField: TextView, username: String) {
+    fun setHouseName(ui: AppCompatActivity, houseNameField: TextView, username: String) {
         val normalizedUsername = Normalizer.normalize(username, Normalizer.Form.NFD).lowercase()
         var houseName = when (normalizedUsername[0]) {
             'a', 'e', 'i', 'o', 'u', 'y', 'œ', 'æ' -> "Maison d’"
