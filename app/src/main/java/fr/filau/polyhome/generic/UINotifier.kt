@@ -76,15 +76,6 @@ class UINotifier (private val ui: AppCompatActivity) {
         toast("Commande transmise ✌️")
     }
 
-    fun bravo() {  // TODO: Remove this once this is completed
-        ui.runOnUiThread {
-            AlertDialog.Builder(ui)
-                .setTitle("bg")
-                .setMessage("t tro for")
-                .show()
-        }
-    }
-
     fun toast(content: String, duration: Int = Toast.LENGTH_SHORT) {
         ui.runOnUiThread {
             Toast.makeText(ui, content, duration).show()
